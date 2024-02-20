@@ -14,7 +14,8 @@ export class BooksService {
   ) { }
 
   async create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+    const book = this.bookRepository.create(createBookDto); //Realiza una instancia 
+    return await this.bookRepository.save(book); // guarda el registro
   }
 
   async findAll() {

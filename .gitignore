@@ -4,7 +4,7 @@
 /build
 
 #directorios de base de datos
-/postgres/*
+/postgres
 
 # Logs
 logs

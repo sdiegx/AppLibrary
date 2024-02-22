@@ -14,8 +14,8 @@ export class BooksService {
   ) { }
 
   async create(createBookDto: CreateBookDto) {
-    const book = this.bookRepository.create(createBookDto); //Realiza una instancia 
-    return await this.bookRepository.save(book); // guarda el registro
+    return await this.bookRepository.save(createBookDto); // guarda el registro
+    
   }
 
   async findAll() {
@@ -23,14 +23,15 @@ export class BooksService {
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} book`;
+    return await this.bookRepository.findOneBy({ id });
   }
 
   async update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+    return await this.bookRepository.update(id, updateBookDto);
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} book`;
+    return await this.bookRepository.softDelete({ id }); // Se le pasa el id
+    // return await this.bookRepository.softRemove(); se le pasa la instancia
   }
 }

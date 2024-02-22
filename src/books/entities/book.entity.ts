@@ -48,19 +48,4 @@ export class Book {
     @JoinTable()
     authors: Author[];
 
-    // Método para serializar los autores a una cadena antes de guardar en la base de datos
-    // serializeAuthors() {
-    //     if (this.authors) {
-    //         return JSON.stringify(this.authors);
-    //     }
-    //     return null;
-    // }
-
-    // // Método para deserializar la cadena de autores a un array después de recuperar de la base de datos
-    // deserializeAuthors(authorsString: string) {
-    //     if (authorsString) {
-    //         return JSON.parse(authorsString);
-    //     }
-    //     return null;
-    // }
 }

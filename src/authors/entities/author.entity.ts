@@ -15,9 +15,7 @@ export class Author {
 	@Column()
 	college: string; // universidad en que trabaja
 
-	@ManyToMany(() => Book, (book) => book.authors, {
-		eager: true,
-	})
+	@ManyToMany(() => Book, (book) => book.authors)
 	@JoinTable()
 	books: Book[];
 

@@ -8,9 +8,6 @@ export class CreateBookDto {
     @MinLength(8)
     title: string;
 
-    @IsArrayOfStrings()
-    authors: string[];
-
     @IsString()
     @MinLength(3)
     @MaxLength(25)

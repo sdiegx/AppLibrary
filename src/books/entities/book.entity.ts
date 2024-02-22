@@ -1,4 +1,5 @@
-import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Author } from "src/authors/entities/author.entity";
+import { Column, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Book {
@@ -8,8 +9,8 @@ export class Book {
     @Column()
     title: string;
 
-    @Column({ type: 'text', array: true, nullable: true })
-    authors: string[]; // Columna de tipo texto que almacena un array de autores
+    // @Column({ type: 'text', array: true, nullable: true })
+    // authors: string[]; // Columna de tipo texto que almacena un array de autores
 
     @Column()
     publisher: string;
@@ -41,19 +42,25 @@ export class Book {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    // Método para serializar los autores a una cadena antes de guardar en la base de datos
-    serializeAuthors() {
-        if (this.authors) {
-            return JSON.stringify(this.authors);
-        }
-        return null;
-    }
+    @ManyToMany((type) => Author, (author) => author.books, {
+        eager: true,
+    })
+    @JoinTable()
+    authors: Author[];
 
-    // Método para deserializar la cadena de autores a un array después de recuperar de la base de datos
-    deserializeAuthors(authorsString: string) {
-        if (authorsString) {
-            return JSON.parse(authorsString);
-        }
-        return null;
-    }
+    // Método para serializar los autores a una cadena antes de guardar en la base de datos
+    // serializeAuthors() {
+    //     if (this.authors) {
+    //         return JSON.stringify(this.authors);
+    //     }
+    //     return null;
+    // }
+
+    // // Método para deserializar la cadena de autores a un array después de recuperar de la base de datos
+    // deserializeAuthors(authorsString: string) {
+    //     if (authorsString) {
+    //         return JSON.parse(authorsString);
+    //     }
+    //     return null;
+    // }
 }

@@ -8,8 +8,6 @@ import { AuthorsModule } from './authors/authors.module';
 
 @Module({
   imports: [
-    UsersModule, 
-    BooksModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -29,6 +27,8 @@ import { AuthorsModule } from './authors/authors.module';
         synchronize: true, // tampoco es bueno usar en produccion porque se pueden perder datos
       }),
     }),
+    UsersModule, 
+    BooksModule,
     AuthorsModule,
   ],
   controllers: [],

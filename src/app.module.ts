@@ -3,6 +3,7 @@ import { UsersModule } from './users/users.module';
 import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoansModule } from './loans/loans.module';
 
 
 @Module({
@@ -28,6 +29,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         synchronize: true, // tampoco es bueno usar en produccion porque se pueden perder datos
       }),
     }),
+    LoansModule,
   ],
   controllers: [],
   providers: [],

@@ -5,7 +5,7 @@ import { Transform } from "class-transformer";
 export class CreateBookDto {
     @IsString()
     @MaxLength(50)
-    @MinLength(8)
+    @MinLength(3)
     title: string;
 
     @IsArrayOfStrings()
@@ -22,7 +22,7 @@ export class CreateBookDto {
 
     @IsString()
     @MinLength(4)
-    @MaxLength(15)
+    @MaxLength(30)
     genre: string;
     
     @IsString()

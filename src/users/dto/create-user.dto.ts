@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsString, MaxLength, MinLength } from "class-validator";
+import { IsEmail, IsString, MaxLength, MinLength } from "class-validator";
 export class CreateUserDto {
 
 
@@ -14,6 +14,7 @@ export class CreateUserDto {
 	lastName: string;
 
 	@IsString()
+	@IsEmail()
 	@MaxLength(40)
 	@MinLength(3)
 	email: string;

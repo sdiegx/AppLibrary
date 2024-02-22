@@ -3,12 +3,12 @@ import { Transform } from "class-transformer";
 export class CreateLoanDto {
     @IsDate()
     @Transform(({ value }) => new Date(value))
-    start_date: Date
+    start_date: Date;
 
     @IsDate()
     @Transform(({ value }) => new Date(value))
-    end_date: Date
+    end_date: Date;
 
     @IsBoolean()
-    status: boolean
+    status: boolean;
 }

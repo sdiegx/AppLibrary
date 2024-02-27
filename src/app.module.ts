@@ -4,6 +4,7 @@ import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthorsModule } from './authors/authors.module';
+import { LoansModule } from './loans/loans.module';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { AuthorsModule } from './authors/authors.module';
     UsersModule, 
     BooksModule,
     AuthorsModule,
+    LoansModule,
   ],
   controllers: [],
   providers: [],

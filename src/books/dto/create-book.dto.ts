@@ -6,7 +6,7 @@ import { Author } from "src/authors/entities/author.entity";
 export class CreateBookDto {
     @IsString()
     @MaxLength(50)
-    @MinLength(8)
+    @MinLength(3)
     title: string;
 
     @IsArray()
@@ -25,7 +25,7 @@ export class CreateBookDto {
 
     @IsString()
     @MinLength(4)
-    @MaxLength(15)
+    @MaxLength(30)
     genre: string;
     
     @IsString()

@@ -3,13 +3,12 @@ import { UsersModule } from './users/users.module';
 import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthorsModule } from './authors/authors.module';
 import { LoansModule } from './loans/loans.module';
 
 
 @Module({
   imports: [
-    UsersModule, 
-    BooksModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -29,6 +28,9 @@ import { LoansModule } from './loans/loans.module';
         synchronize: true, // tampoco es bueno usar en produccion porque se pueden perder datos
       }),
     }),
+    UsersModule, 
+    BooksModule,
+    AuthorsModule,
     LoansModule,
   ],
   controllers: [],

@@ -1,6 +1,7 @@
-import { IsBoolean, IsDate, IsInt, IsOptional, IsPositive, IsString, MaxLength, MinLength } from "class-validator";
+import { ArrayMinSize, IsArray, IsBoolean, IsDate, IsInt, IsOptional, IsPositive, IsString, MaxLength, MinLength } from "class-validator";
 import { IsArrayOfStrings } from "../validators/arrayOfStrings.validator";
 import { Transform } from "class-transformer";
+import { Author } from "src/authors/entities/author.entity";
 
 export class CreateBookDto {
     @IsString()
@@ -8,8 +9,10 @@ export class CreateBookDto {
     @MinLength(3)
     title: string;
 
-    @IsArrayOfStrings()
-    authors: string[];
+    @IsArray()
+    @ArrayMinSize(1)
+    @IsOptional()
+    authors?: Author[];
 
     @IsString()
     @MinLength(3)

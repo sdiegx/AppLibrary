@@ -38,7 +38,7 @@ export class BooksService {
 
       return author;
     });
-
+    // este control puede que no sea necesario, aunque si el arreglo authores esta vacio puede que si
     if(!authors) {
       throw new BadRequestException('Authors not found');
     }

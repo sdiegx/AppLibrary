@@ -1,4 +1,5 @@
-import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Loan } from "src/loans/entities/loan.entity";
+import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -17,6 +18,9 @@ export class User {
 
 	@Column()
 	password: string;
+
+	@OneToMany(() => Loan, loan => loan.user)
+	loans: Loan[];
 
 	@DeleteDateColumn()
   deletedAt: Date;

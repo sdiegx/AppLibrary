@@ -11,8 +11,7 @@ export class CreateBookDto {
 
     @IsArray()
     @ArrayMinSize(1)
-    @IsOptional()
-    authors?: Author[];
+    authors: Author[];
 
     @IsString()
     @MinLength(3)

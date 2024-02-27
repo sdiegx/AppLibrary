@@ -1,17 +1,21 @@
-import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Loan {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column()
-    start_date: Date
+    start_date: Date;
 
     @Column()
-    end_date: Date
+    end_date: Date;
 
     @Column()
-    status: boolean
+    status: boolean;
+
+    @ManyToOne(() => User, user => user.loans, { eager: true })
+    user: User;
 
     @DeleteDateColumn()
     deletedAt: Date;

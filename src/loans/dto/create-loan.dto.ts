@@ -1,5 +1,6 @@
-import { IsBoolean, IsDate, IsInt, IsOptional, IsPositive, IsString, MaxLength, MinLength } from "class-validator";
-import { Transform } from "class-transformer";
+import { IsBoolean, IsDate, ValidateNested } from "class-validator";
+import { Transform, Type } from "class-transformer";
+import { User } from "src/users/entities/user.entity";
 export class CreateLoanDto {
     @IsDate()
     @Transform(({ value }) => new Date(value))
@@ -11,4 +12,8 @@ export class CreateLoanDto {
 
     @IsBoolean()
     status: boolean;
+
+    @ValidateNested()
+    @Type(() => User)
+    user: User;
 }

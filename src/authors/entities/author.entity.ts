@@ -18,8 +18,7 @@ export class Author {
 	@DeleteDateColumn()
     deletedAt: Date;
 
-	@ManyToMany(() => Book, (book) => book.authors)
-	@JoinTable()
+	@ManyToMany(() => Book, (book) => book.authors) // si se daña aqui habia antes un jointable
 	books: Book[];
 
 }

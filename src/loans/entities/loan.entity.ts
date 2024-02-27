@@ -1,5 +1,6 @@
+import { Book } from "src/books/entities/book.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Loan {
     @PrimaryGeneratedColumn()
@@ -16,6 +17,12 @@ export class Loan {
 
     @ManyToOne(() => User, user => user.loans, { eager: true })
     user: User;
+
+    @ManyToMany(() => Book, book => book.loans, {
+			eager: true,
+		})
+		@JoinTable()
+		books: Book[];
 
     @DeleteDateColumn()
     deletedAt: Date;

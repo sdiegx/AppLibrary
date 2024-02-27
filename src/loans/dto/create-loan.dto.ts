@@ -12,8 +12,5 @@ export class CreateLoanDto {
 
     @IsBoolean()
     status: boolean;
-
-    @ValidateNested()
-    @Type(() => User)
-    user: User;
+    
 }

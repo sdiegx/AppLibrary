@@ -1,16 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { Loan } from './entities/loan.entity';
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm' 
-@Injectable()
+import { User } from 'src/users/entities/user.entity';
 
+@Injectable()
 export class LoansService {
-  @InjectRepository(Loan)
-  private readonly loanRepository: Repository<Loan>
-  async create(createLoanDto: CreateLoanDto) {
-    return await this.loanRepository.save(createLoanDto)
+
+  constructor(
+    @InjectRepository(Loan)
+    private readonly loanRepository: Repository<Loan>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>
+  ) {  }
+  
+  async create(id: number, createLoanDto: CreateLoanDto) {
+    const existingUsers = await this.userRepository.find();
+
+    const user = existingUsers.find(user => user.id === id)
+
+    if(!user) {
+      throw new BadRequestException('User no existe');
+    }
+
+    return await this.loanRepository.save({
+      ...createLoanDto,
+      user,
+    })
   }
 
   async findAll() {

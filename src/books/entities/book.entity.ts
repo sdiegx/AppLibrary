@@ -1,4 +1,5 @@
 import { Author } from "src/authors/entities/author.entity";
+import { Loan } from "src/loans/entities/loan.entity";
 import { Column, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -39,13 +40,16 @@ export class Book {
     @Column()
     numberOfCopies: number;
 
-    @DeleteDateColumn()
-    deletedAt: Date;
-
-    @ManyToMany((type) => Author, (author) => author.books, {
+    @ManyToMany(() => Author, (author) => author.books, {
         eager: true,
     })
     @JoinTable()
     authors: Author[];
 
+    @ManyToMany(() => Loan, loan => loan.books)
+    @JoinTable()
+    loans: Loan[];
+
+    @DeleteDateColumn()
+    deletedAt: Date;
 }

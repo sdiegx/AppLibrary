@@ -15,9 +15,9 @@ export class UsersService {
   ) {  }
 
   async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // 10 es el costo de hashing, puedes ajustarlo según tus necesidades
-    const userToCreate = { ...createUserDto, password: hashedPassword };
-    return await this.userRepository.save(userToCreate);
+    // const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // 10 es el costo de hashing, puedes ajustarlo según tus necesidades
+    // const userToCreate = { ...createUserDto, password: hashedPassword };
+    return await this.userRepository.save(createUserDto);
     // return await this.userRepository.save(createUserDto);
   }
 

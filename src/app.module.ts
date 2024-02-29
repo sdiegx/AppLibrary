@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthorsModule } from './authors/authors.module';
 import { LoansModule } from './loans/loans.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -32,6 +33,7 @@ import { LoansModule } from './loans/loans.module';
     BooksModule,
     AuthorsModule,
     LoansModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

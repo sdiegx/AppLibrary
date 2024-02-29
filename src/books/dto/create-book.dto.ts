@@ -1,5 +1,4 @@
 import { ArrayMinSize, IsArray, IsBoolean, IsDate, IsInt, IsOptional, IsPositive, IsString, MaxLength, MinLength } from "class-validator";
-import { IsArrayOfStrings } from "../validators/arrayOfStrings.validator";
 import { Transform } from "class-transformer";
 import { Author } from "src/authors/entities/author.entity";
 

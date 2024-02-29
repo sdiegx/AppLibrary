@@ -5,6 +5,7 @@ import { Loan } from './entities/loan.entity';
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm' 
 import { User } from 'src/users/entities/user.entity';
+import { Book } from 'src/books/entities/book.entity';
 
 @Injectable()
 export class LoansService {
@@ -14,7 +15,10 @@ export class LoansService {
     private readonly loanRepository: Repository<Loan>,
 
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+
+    @InjectRepository(Book)
+    private readonly bookRepository: Repository<Book>
   ) {  }
   
   async create(id: number, createLoanDto: CreateLoanDto) {
@@ -26,9 +30,27 @@ export class LoansService {
       throw new BadRequestException('User no existe');
     }
 
+    const existingBooks = await this.bookRepository.find();
+
+    const books = createLoanDto.books.map(bookData => {
+      const book = existingBooks.find(existingBook => 
+        existingBook.title === bookData.title
+      );
+
+      if(!book) {
+        throw new BadRequestException(`Book "${bookData.title}" not found`)
+      }
+      return book;
+    })
+
+    if(!books){
+      throw new BadRequestException('Books not found')
+    }
+
     return await this.loanRepository.save({
       ...createLoanDto,
       user,
+      books,
     })
   }
 

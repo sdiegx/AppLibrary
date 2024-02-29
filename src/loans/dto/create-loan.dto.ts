@@ -1,6 +1,7 @@
-import { IsBoolean, IsDate, ValidateNested } from "class-validator";
+import { ArrayMinSize, IsArray, IsBoolean, IsDate, ValidateNested } from "class-validator";
 import { Transform, Type } from "class-transformer";
-import { User } from "src/users/entities/user.entity";
+import { IsArrayOfStrings } from "../validators/arrayOfStrings.validator";
+import { Book } from "src/books/entities/book.entity";
 export class CreateLoanDto {
     @IsDate()
     @Transform(({ value }) => new Date(value))
@@ -12,5 +13,9 @@ export class CreateLoanDto {
 
     @IsBoolean()
     status: boolean;
-    
+
+    @IsArray()
+    @ArrayMinSize(1)
+    books: Book[];
+
 }

@@ -13,11 +13,14 @@ export class User {
 	@Column()
 	lastName: string;
 
-	@Column({ unique: true })
+	@Column({ unique: true, nullable: false })
 	email: string;
 
-	@Column()
+	@Column({ nullable: false})
 	password: string;
+
+	@Column({ default: 'user' })
+	rol: string;
 
 	@OneToMany(() => Loan, loan => loan.user)
 	loans: Loan[];

@@ -7,9 +7,9 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 export class LoansController {
   constructor(private readonly loansService: LoansService) {}
 
-  @Post()
-  create(@Body() createLoanDto: CreateLoanDto) {
-    return this.loansService.create(createLoanDto);
+  @Post(':id')
+  create(@Param('id') id: number, @Body() createLoanDto: CreateLoanDto ) {
+    return this.loansService.create(id, createLoanDto);
   }
 
   @Get()

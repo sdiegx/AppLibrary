@@ -21,19 +21,25 @@ export class UsersService {
     // return await this.userRepository.save(createUserDto);
   }
 
-  async findAll() {
-    return await this.userRepository.find();
+  async findOneByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
   }
 
-  async findOne(id: number) {
-    return await this.userRepository.findOneBy({ id });
-  }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.userRepository.update(id, updateUserDto);
-  }
+  // por el momento no necesito ninguna de estas funciones
+  // async findAll() {
+  //   return await this.userRepository.find();
+  // }
 
-  async remove(id: number) {
-    return await this.userRepository.softDelete({ id });
-  }
+  // async findOne(id: number) {
+  //   return await this.userRepository.findOneBy({ id });
+  // }
+
+  // async update(id: number, updateUserDto: UpdateUserDto) {
+  //   return await this.userRepository.update(id, updateUserDto);
+  // }
+
+  // async remove(id: number) {
+  //   return await this.userRepository.softDelete({ id });
+  // }
 }

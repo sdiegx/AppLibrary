@@ -1,16 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
+import { RegisterDto } from './dto/register.dto';
+import { JwtService } from '@nestjs/jwt'
+import * as bcryptjs from 'bcryptjs';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
 
-	constructor(private readonly usersService: UsersService) {}
+	constructor(
+		private readonly usersService: UsersService,
+		private readonly jwtService: JwtService
+	) {}
 
-	register() {
-		return 'register';
+	async register({firstName, lastName, email, password}: RegisterDto) {
+		const user = await this.usersService.findOneByEmail(email)
+		if (user) {
+			throw new BadRequestException('User already exists');
+		}
+		return await this.usersService.create({
+			firstName,
+			lastName,
+			email,
+			password: await bcryptjs.hash(password, 10), // 10 es el costo de hashing, puedes ajustarlo según tus necesidades
+		});
 	}
 
-	login() {
+	async login({email, password}: LoginDto) {
+		const user = await this.usersService.findOneByEmail(email);
+		if(!user) {
+			throw new UnauthorizedException('email is wrong');
+		}
+
+		const isPasswordValid = await bcryptjs.compare(password, user.password);
+		if(!isPasswordValid){
+			throw new UnauthorizedException('password is wrong');
+		}
 		return 'login';
 	}
 }

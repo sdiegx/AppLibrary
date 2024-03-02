@@ -4,7 +4,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,10 +14,7 @@ export class UsersService {
   ) {  }
 
   async create(createUserDto: CreateUserDto) {
-    // const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // 10 es el costo de hashing, puedes ajustarlo según tus necesidades
-    // const userToCreate = { ...createUserDto, password: hashedPassword };
     return await this.userRepository.save(createUserDto);
-    // return await this.userRepository.save(createUserDto);
   }
 
   async findOneByEmail(email: string) {

@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   async profile({ email, role }: { email: string; role: string }) {
-    console.log(role);
+    // console.log(role);
     if (role !== 'admin') {
       throw new UnauthorizedException(
         'You are not authorized to access this resource',

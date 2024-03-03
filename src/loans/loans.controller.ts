@@ -10,7 +10,10 @@ import {
 import { LoansService } from './loans.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { Role } from '../common/enums/role.enum';
 
+@Auth(Role.USER)
 @Controller('loans')
 export class LoansController {
   constructor(private readonly loansService: LoansService) {}

@@ -7,8 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthorsService {
-
-  constructor (
+  constructor(
     @InjectRepository(Author)
     private readonly authorRepository: Repository<Author>,
   ) {}
@@ -30,6 +29,6 @@ export class AuthorsService {
   }
 
   async remove(id: number) {
-    return this.authorRepository.softDelete( { id } );
+    return this.authorRepository.softDelete({ id });
   }
 }

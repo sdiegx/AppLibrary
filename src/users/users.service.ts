@@ -7,11 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
-  ) {  }
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     return await this.userRepository.save(createUserDto);
@@ -20,7 +19,6 @@ export class UsersService {
   async findOneByEmail(email: string) {
     return this.userRepository.findOneBy({ email });
   }
-
 
   // por el momento no necesito ninguna de estas funciones
   // async findAll() {

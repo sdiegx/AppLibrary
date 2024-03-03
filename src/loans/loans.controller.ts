@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { LoansService } from './loans.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
@@ -8,7 +16,7 @@ export class LoansController {
   constructor(private readonly loansService: LoansService) {}
 
   @Post(':id')
-  create(@Param('id') id: number, @Body() createLoanDto: CreateLoanDto ) {
+  create(@Param('id') id: number, @Body() createLoanDto: CreateLoanDto) {
     return this.loansService.create(id, createLoanDto);
   }
 

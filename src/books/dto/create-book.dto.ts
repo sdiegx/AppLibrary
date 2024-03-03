@@ -11,7 +11,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { Author } from 'src/authors/entities/author.entity';
+import { Author } from '../../authors/entities/author.entity';
 
 export class CreateBookDto {
   @IsString()

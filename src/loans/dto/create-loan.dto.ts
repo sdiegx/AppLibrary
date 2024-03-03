@@ -1,6 +1,6 @@
 import { ArrayMinSize, IsArray, IsBoolean, IsDate } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { Book } from 'src/books/entities/book.entity';
+import { Book } from '../../books/entities/book.entity';
 export class CreateLoanDto {
   @IsDate()
   @Transform(({ value }) => new Date(value))

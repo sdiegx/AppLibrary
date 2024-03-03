@@ -4,8 +4,8 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 import { Loan } from './entities/loan.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Book } from 'src/books/entities/book.entity';
+import { User } from '../users/entities/user.entity';
+import { Book } from '../books/entities/book.entity';
 
 @Injectable()
 export class LoansService {

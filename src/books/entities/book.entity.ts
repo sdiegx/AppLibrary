@@ -1,5 +1,5 @@
-import { Author } from 'src/authors/entities/author.entity';
-import { Loan } from 'src/loans/entities/loan.entity';
+import { Author } from '../../authors/entities/author.entity';
+import { Loan } from '../../loans/entities/loan.entity';
 import {
   Column,
   DeleteDateColumn,

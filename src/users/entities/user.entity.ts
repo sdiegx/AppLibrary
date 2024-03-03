@@ -1,4 +1,5 @@
-import { Loan } from 'src/loans/entities/loan.entity';
+import { Role } from '../../common/enums/role.enum';
+import { Loan } from '../../loans/entities/loan.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -24,8 +25,8 @@ export class User {
   @Column({ nullable: false, select: false })
   password: string;
 
-  @Column({ default: 'user' })
-  role: string;
+  @Column({ type: 'enum', default: Role.USER, enum: Role })
+  role: Role;
 
   @OneToMany(() => Loan, (loan) => loan.user)
   loans: Loan[];

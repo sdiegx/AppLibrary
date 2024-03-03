@@ -20,20 +20,27 @@ export class UsersService {
     return this.userRepository.findOneBy({ email });
   }
 
+  async findByEmailWithPassword(email: string) {
+    return await this.userRepository.findOne({
+      where: { email },
+      select: ['id', 'firstName', 'lastName', 'email', 'role', 'password'],
+    });
+  }
+
   // por el momento no necesito ninguna de estas funciones
-  // async findAll() {
-  //   return await this.userRepository.find();
-  // }
+  async findAll() {
+    return await this.userRepository.find();
+  }
 
-  // async findOne(id: number) {
-  //   return await this.userRepository.findOneBy({ id });
-  // }
+  async findOne(id: number) {
+    return await this.userRepository.findOneBy({ id });
+  }
 
-  // async update(id: number, updateUserDto: UpdateUserDto) {
-  //   return await this.userRepository.update(id, updateUserDto);
-  // }
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(id, updateUserDto);
+  }
 
-  // async remove(id: number) {
-  //   return await this.userRepository.softDelete({ id });
-  // }
+  async remove(id: number) {
+    return await this.userRepository.softDelete({ id });
+  }
 }

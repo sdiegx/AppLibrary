@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Book } from '../books/entities/book.entity';
+import { UserActiveInterface } from '../common/interfaces/user-active.interface';
+import { Role } from '../common/enums/role.enum';
 
 @Injectable()
 export class LoansService {
@@ -20,14 +22,14 @@ export class LoansService {
     private readonly bookRepository: Repository<Book>,
   ) {}
 
-  async create(id: number, createLoanDto: CreateLoanDto) {
-    const existingUsers = await this.userRepository.find();
+  async create(createLoanDto: CreateLoanDto, user: UserActiveInterface) {
+    // const existingUsers = await this.userRepository.find();
 
-    const user = existingUsers.find((user) => user.id === id);
+    // const user = existingUsers.find((user) => user.id === id);
 
-    if (!user) {
-      throw new BadRequestException('User no existe');
-    }
+    // if (!user) {
+    //   throw new BadRequestException('User no existe');
+    // }
 
     const existingBooks = await this.bookRepository.find();
 
@@ -48,13 +50,18 @@ export class LoansService {
 
     return await this.loanRepository.save({
       ...createLoanDto,
-      user,
+      userEmail: user.email,
       books,
     });
   }
 
-  async findAll() {
-    return await this.loanRepository.find();
+  async findAll(user: UserActiveInterface) {
+    if (user.role === Role.ADMIN) {
+      return await this.loanRepository.find();
+    }
+    return await this.loanRepository.find({
+      where: { userEmail: user.email },
+    });
   }
 
   async findOne(id: number) {

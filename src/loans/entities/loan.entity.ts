@@ -4,6 +4,7 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -24,7 +25,11 @@ export class Loan {
   status: boolean;
 
   @ManyToOne(() => User, (user) => user.loans, { eager: true })
+  @JoinColumn({ name: 'userEmail', referencedColumnName: 'email' })
   user: User;
+
+  @Column()
+  userEmail: string;
 
   @ManyToMany(() => Book, (book) => book.loans, {
     eager: true,

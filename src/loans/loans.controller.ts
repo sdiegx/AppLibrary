@@ -34,8 +34,8 @@ export class LoansController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.loansService.findOne(id);
+  findOne(@Param('id') id: number, @ActiveUser() user: UserActiveInterface) {
+    return this.loansService.findOne(id, user);
   }
 
   @Patch(':id')

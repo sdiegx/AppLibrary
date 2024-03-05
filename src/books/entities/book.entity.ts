@@ -17,9 +17,6 @@ export class Book {
   @Column()
   title: string;
 
-  // @Column({ type: 'text', array: true, nullable: true })
-  // authors: string[]; // Columna de tipo texto que almacena un array de autores
-
   @Column()
   publisher: string;
 

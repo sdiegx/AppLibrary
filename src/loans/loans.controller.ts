@@ -3,9 +3,9 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { LoansService } from './loans.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
@@ -38,13 +38,18 @@ export class LoansController {
     return this.loansService.findOne(id, user);
   }
 
+  @Auth(Role.ADMIN)
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateLoanDto: UpdateLoanDto) {
-    return this.loansService.update(id, updateLoanDto);
+  update(
+    @Param('id') id: number,
+    @Body() updateLoanDto: UpdateLoanDto,
+    @ActiveUser() user: UserActiveInterface,
+  ) {
+    return this.loansService.update(id, updateLoanDto, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.loansService.remove(id);
+  remove(@Param('id') id: number, @ActiveUser() user: UserActiveInterface) {
+    return this.loansService.remove(id, user);
   }
 }

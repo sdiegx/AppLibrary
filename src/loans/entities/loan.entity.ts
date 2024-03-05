@@ -21,7 +21,7 @@ export class Loan {
   @Column()
   end_date: Date;
 
-  @Column()
+  @Column({ default: false })
   status: boolean;
 
   @ManyToOne(() => User, (user) => user.loans, { eager: true })

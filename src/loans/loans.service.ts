@@ -8,7 +8,6 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 import { Loan } from './entities/loan.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity';
 import { Book } from '../books/entities/book.entity';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
 import { Role } from '../common/enums/role.enum';
@@ -19,15 +18,12 @@ export class LoansService {
     @InjectRepository(Loan)
     private readonly loanRepository: Repository<Loan>,
 
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-
     @InjectRepository(Book)
     private readonly bookRepository: Repository<Book>,
   ) {}
 
   async create(createLoanDto: CreateLoanDto, user: UserActiveInterface) {
-    const books = await this.validateBooks(createLoanDto);
+    const books = await this.validateBooks(createLoanDto.books);
 
     return await this.loanRepository.save({
       ...createLoanDto,
@@ -57,11 +53,35 @@ export class LoansService {
     return loan;
   }
 
-  async update(id: number, updateLoanDto: UpdateLoanDto) {
-    return await this.loanRepository.update(id, updateLoanDto);
+  async update(
+    id: number,
+    updateLoanDto: UpdateLoanDto,
+    user: UserActiveInterface,
+  ) {
+    const loan = await this.findOne(id, user);
+    // const books = await this.validateBooksUpdate(updateLoanDto);
+    if (!loan) {
+      throw new BadRequestException('loan not found');
+    }
+    if (updateLoanDto.books) {
+      // const updateBooks = await this.validateBooks(updateLoanDto.books);
+      // await this.clearBooks(loan);
+      // loan.books = updateBooks;
+      // console.log('entro al if de libros');
+      // return await this.loanRepository.update(id, loan);
+      throw new UnauthorizedException();
+    }
+    return await this.loanRepository.update(id, {
+      ...updateLoanDto,
+      userEmail: user.email,
+    });
   }
 
-  async remove(id: number) {
+  async remove(id: number, user: UserActiveInterface) {
+    if (user.role === Role.ADMIN) {
+      return await this.loanRepository.softDelete({ id });
+    }
+    await this.findOne(id, user);
     return await this.loanRepository.softDelete({ id });
   }
 
@@ -71,7 +91,7 @@ export class LoansService {
     }
   }
 
-  private async validateBooks({ books }: CreateLoanDto) {
+  private async validateBooks(books: Book[]) {
     const existingBooks = await this.bookRepository.find();
 
     const booksEntities = books.map((bookData) => {
@@ -88,7 +108,11 @@ export class LoansService {
     if (!booksEntities) {
       throw new BadRequestException('Books not found');
     }
-
     return booksEntities;
+  }
+
+  async clearBooks(loan: Loan) {
+    loan.books = [];
+    await this.loanRepository.save(loan);
   }
 }

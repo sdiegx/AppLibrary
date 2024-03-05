@@ -13,7 +13,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { Role } from '../common/enums/role.enum';
 
-@Auth(Role.ADMIN)
+@Auth(Role.USER)
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}

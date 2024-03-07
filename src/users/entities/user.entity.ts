@@ -1,27 +1,36 @@
-import { Loan } from "src/loans/entities/loan.entity";
-import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from '../../common/enums/role.enum';
+import { Loan } from '../../loans/entities/loan.entity';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
-
   @PrimaryGeneratedColumn()
-	id: number;
+  id: number;
 
-	@Column()
-	firstName: string;
+  @Column()
+  firstName: string;
 
-	@Column()
-	lastName: string;
+  @Column()
+  lastName: string;
 
-	@Column()
-	email: string;
+  @Column({ unique: true, nullable: false })
+  email: string;
 
-	@Column()
-	password: string;
+  @Column({ nullable: false, select: false })
+  password: string;
 
-	@OneToMany(() => Loan, loan => loan.user)
-	loans: Loan[];
+  @Column({ type: 'enum', default: Role.USER, enum: Role })
+  role: Role;
 
-	@DeleteDateColumn()
+  @OneToMany(() => Loan, (loan) => loan.user)
+  loans: Loan[];
+
+  @DeleteDateColumn()
   deletedAt: Date;
 }

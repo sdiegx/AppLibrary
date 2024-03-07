@@ -1,8 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { Role } from '../common/enums/role.enum';
 
+@Auth(Role.USER)
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}

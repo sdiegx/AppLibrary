@@ -4,23 +4,30 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
-  ) {  }
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // 10 es el costo de hashing, puedes ajustarlo según tus necesidades
-    const userToCreate = { ...createUserDto, password: hashedPassword };
-    return await this.userRepository.save(userToCreate);
-    // return await this.userRepository.save(createUserDto);
+    return await this.userRepository.save(createUserDto);
   }
 
+  async findOneByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
+  }
+
+  async findByEmailWithPassword(email: string) {
+    return await this.userRepository.findOne({
+      where: { email },
+      select: ['id', 'firstName', 'lastName', 'email', 'role', 'password'],
+    });
+  }
+
+  // por el momento no necesito ninguna de estas funciones
   async findAll() {
     return await this.userRepository.find();
   }
@@ -36,13 +43,4 @@ export class UsersService {
   async remove(id: number) {
     return await this.userRepository.softDelete({ id });
   }
-
-  // async hashPassword(password: string): Promise<string> {
-  //   const saltOrRounds = 10;
-  //   return await bcrypt.hash(password, saltOrRounds);
-  // }
-
-  // async comparePassword(password: string, hash: string): Promise<boolean> {
-  //   return await bcrypt.compare(password, hash);
-  // }
 }

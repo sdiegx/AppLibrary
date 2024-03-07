@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthorsModule } from './authors/authors.module';
 import { LoansModule } from './loans/loans.module';
-
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,15 +23,16 @@ import { LoansModule } from './loans/loans.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         retryDelay: 3000,
-        autoLoadEntities: true, // esta linea hace que se carguen todas las entidades automaticamente 
+        autoLoadEntities: true, // esta linea hace que se carguen todas las entidades automaticamente
         // entities: [], en produccion quiza sea mejor poner las entidades una por una en este array en lugar de autoLoadEntities
         synchronize: true, // tampoco es bueno usar en produccion porque se pueden perder datos
       }),
     }),
-    UsersModule, 
+    UsersModule,
     BooksModule,
     AuthorsModule,
     LoansModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

@@ -1,30 +1,42 @@
-import { Book } from "src/books/entities/book.entity";
-import { User } from "src/users/entities/user.entity";
-import { Column, DeleteDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Book } from '../../books/entities/book.entity';
+import { User } from '../../users/entities/user.entity';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 @Entity()
 export class Loan {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    start_date: Date;
+  @Column()
+  start_date: Date;
 
-    @Column()
-    end_date: Date;
+  @Column()
+  end_date: Date;
 
-    @Column()
-    status: boolean;
+  @Column({ default: false })
+  status: boolean;
 
-    @ManyToOne(() => User, user => user.loans, { eager: true })
-    user: User;
+  @ManyToOne(() => User, (user) => user.loans, { eager: true })
+  @JoinColumn({ name: 'userEmail', referencedColumnName: 'email' })
+  user: User;
 
-    @ManyToMany(() => Book, book => book.loans, {
-			eager: true,
-		})
-		@JoinTable()
-		books: Book[];
+  @Column()
+  userEmail: string;
 
-    @DeleteDateColumn()
-    deletedAt: Date;
+  @ManyToMany(() => Book, (book) => book.loans, {
+    eager: true,
+  })
+  @JoinTable()
+  books: Book[];
 
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

@@ -1,72 +1,118 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { Loan } from './entities/loan.entity';
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm' 
-import { User } from 'src/users/entities/user.entity';
-import { Book } from 'src/books/entities/book.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Book } from '../books/entities/book.entity';
+import { UserActiveInterface } from '../common/interfaces/user-active.interface';
+import { Role } from '../common/enums/role.enum';
 
 @Injectable()
 export class LoansService {
-
   constructor(
     @InjectRepository(Loan)
     private readonly loanRepository: Repository<Loan>,
 
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-
     @InjectRepository(Book)
-    private readonly bookRepository: Repository<Book>
-  ) {  }
-  
-  async create(id: number, createLoanDto: CreateLoanDto) {
-    const existingUsers = await this.userRepository.find();
+    private readonly bookRepository: Repository<Book>,
+  ) {}
 
-    const user = existingUsers.find(user => user.id === id)
-
-    if(!user) {
-      throw new BadRequestException('User no existe');
-    }
-
-    const existingBooks = await this.bookRepository.find();
-
-    const books = createLoanDto.books.map(bookData => {
-      const book = existingBooks.find(existingBook => 
-        existingBook.title === bookData.title
-      );
-
-      if(!book) {
-        throw new BadRequestException(`Book "${bookData.title}" not found`)
-      }
-      return book;
-    })
-
-    if(!books){
-      throw new BadRequestException('Books not found')
-    }
+  async create(createLoanDto: CreateLoanDto, user: UserActiveInterface) {
+    const books = await this.validateBooks(createLoanDto.books);
 
     return await this.loanRepository.save({
       ...createLoanDto,
-      user,
+      userEmail: user.email,
       books,
-    })
+    });
   }
 
-  async findAll() {
-    return await this.loanRepository.find()
+  async findAll(user: UserActiveInterface) {
+    if (user.role === Role.ADMIN) {
+      return await this.loanRepository.find();
+    }
+    return await this.loanRepository.find({
+      where: { userEmail: user.email },
+    });
   }
 
-  async findOne(id: number) {
-    return await this.loanRepository.findOneBy({ id });
+  async findOne(id: number, user: UserActiveInterface) {
+    const loan = await this.loanRepository.findOneBy({ id });
+
+    if (!loan) {
+      throw new BadRequestException('Loan not found');
+    }
+
+    this.validateOwnership(loan, user);
+
+    return loan;
   }
 
-  async update(id: number, updateLoanDto: UpdateLoanDto) {
-    return await this.loanRepository.update(id, updateLoanDto)
+  async update(
+    id: number,
+    updateLoanDto: UpdateLoanDto,
+    user: UserActiveInterface,
+  ) {
+    const loan = await this.findOne(id, user);
+    // const books = await this.validateBooksUpdate(updateLoanDto);
+    if (!loan) {
+      throw new BadRequestException('loan not found');
+    }
+    if (updateLoanDto.books) {
+      // const updateBooks = await this.validateBooks(updateLoanDto.books);
+      // await this.clearBooks(loan);
+      // loan.books = updateBooks;
+      // console.log('entro al if de libros');
+      // return await this.loanRepository.update(id, loan);
+      throw new UnauthorizedException();
+    }
+    return await this.loanRepository.update(id, {
+      ...updateLoanDto,
+      userEmail: user.email,
+    });
   }
 
-  async remove(id: number) {
-    return await this.loanRepository.softDelete({ id })
+  async remove(id: number, user: UserActiveInterface) {
+    if (user.role === Role.ADMIN) {
+      return await this.loanRepository.softDelete({ id });
+    }
+    await this.findOne(id, user);
+    return await this.loanRepository.softDelete({ id });
+  }
+
+  private validateOwnership(loan: Loan, user: UserActiveInterface) {
+    if (user.role !== Role.ADMIN && loan.userEmail !== user.email) {
+      throw new UnauthorizedException();
+    }
+  }
+
+  private async validateBooks(books: Book[]) {
+    const existingBooks = await this.bookRepository.find();
+
+    const booksEntities = books.map((bookData) => {
+      const book = existingBooks.find(
+        (existingBook) => existingBook.title === bookData.title,
+      );
+
+      if (!book) {
+        throw new BadRequestException(`Book "${bookData.title}" not found`);
+      }
+      return book;
+    });
+
+    if (!booksEntities) {
+      throw new BadRequestException('Books not found');
+    }
+    return booksEntities;
+  }
+
+  async clearBooks(loan: Loan) {
+    loan.books = [];
+    await this.loanRepository.save(loan);
   }
 }

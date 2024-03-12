@@ -5,7 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { tap } from 'rxjs';
+import { catchError, tap } from 'rxjs';
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
@@ -23,6 +23,12 @@ export class LoggerInterceptor implements NestInterceptor {
         console.log(
           `${request.method} ${request.path} ${response.statusCode} ${resTime}ms`,
         );
+      }),
+      catchError((error) => {
+        console.error(
+          `Error en ${request.method} ${request.path}: ${error.message}`,
+        );
+        throw error; // Re-lanza el error para que sea manejado por el manejador de excepciones global
       }),
     );
   }

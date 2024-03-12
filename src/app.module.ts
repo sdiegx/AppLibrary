@@ -35,6 +35,6 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  // providers: [{ provide: APP_INTERCEPTOR, useClass: LoggerInterceptor }],
 })
 export class AppModule {}

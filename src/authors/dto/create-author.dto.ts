@@ -12,7 +12,7 @@ export class CreateAuthorDto {
   lastName: string;
 
   @IsString()
-  @MinLength(6)
+  @MinLength(3)
   @MaxLength(50)
   college: string; // universidad en que trabaja
 }

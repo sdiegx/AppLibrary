@@ -2,5 +2,5 @@ projectKey=TestBackendLibraryApp
 serverUrl=http://localhost:9000
 serverVersion=9.9.4.87374
 dashboardUrl=http://localhost:9000/dashboard?id=TestBackendLibraryApp
-ceTaskId=AY3q9UqFubj_xvPYcaVo
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AY3q9UqFubj_xvPYcaVo
+ceTaskId=AY4xv-Gc4o2bpVH3Sd1E
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AY4xv-Gc4o2bpVH3Sd1E

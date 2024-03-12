@@ -59,16 +59,10 @@ export class LoansService {
     user: UserActiveInterface,
   ) {
     const loan = await this.findOne(id, user);
-    // const books = await this.validateBooksUpdate(updateLoanDto);
     if (!loan) {
       throw new BadRequestException('loan not found');
     }
     if (updateLoanDto.books) {
-      // const updateBooks = await this.validateBooks(updateLoanDto.books);
-      // await this.clearBooks(loan);
-      // loan.books = updateBooks;
-      // console.log('entro al if de libros');
-      // return await this.loanRepository.update(id, loan);
       throw new UnauthorizedException();
     }
     return await this.loanRepository.update(id, {
